@@ -3,11 +3,11 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { ArrowLeftCircleIcon, X } from "lucide-react";
+import { ArrowLeftCircleIcon, ArrowRightCircleIcon, X } from "lucide-react";
 import { format, isSameDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useCalendar } from "./hooks/useCalendar";
-import { CalendarForm } from "./CalendarForm";
+import { CalendarForm } from "./form/CalendarForm";
 
 const Calendar = () => {
   const hook = useCalendar();
@@ -16,11 +16,11 @@ const Calendar = () => {
     <div className="p-4">
       <div className="flex items-center mb-4 gap-3">
         <ArrowLeftCircleIcon
-          className="font-bold cursor-pointer"
+          className="font-bold cursor-pointer hover:text-zinc-600"
           onClick={hook.handlePrevMonth}
         />
-        <ArrowLeftCircleIcon
-          className="cursor-pointer rotate-180"
+        <ArrowRightCircleIcon
+          className="cursor-pointer hover:text-zinc-600"
           onClick={hook.handleNextMonth}
         />
         <h2 className="text-xl font-bold">
@@ -28,7 +28,7 @@ const Calendar = () => {
         </h2>
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
         <div className="grid grid-cols-7">
           {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) => (
             <div key={day} className="text-center font-bold">
@@ -51,7 +51,7 @@ const Calendar = () => {
               >
                 <PopoverTrigger asChild>
                   <div
-                    className={`p-10 rounded-xl cursor-pointer text-center  
+                    className={`hover:border-zinc-100 lg:p-8 md:p-6 sm:p-4 p-2 rounded-xl cursor-pointer text-center  
                           ${isSameDay(day, new Date()) ? "font-bold border-zinc-950" : ""}
                           ${!isCurrentMonth ? "text-gray-400" : "border"}
                           ${isSameDay(day, hook.selectedDate as Date) ? "bg-zinc-950 text-white" : ""}`}
