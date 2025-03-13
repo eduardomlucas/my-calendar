@@ -3,42 +3,32 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { ArrowLeftCircleIcon, ArrowRightCircleIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 import { format, isSameDay } from "date-fns";
-import { ptBR } from "date-fns/locale";
+
 import { useCalendar } from "./hooks/useCalendar";
 import { CalendarForm } from "./form/CalendarForm";
+import { MonthSelector } from "../monthselector/MonthSelector";
 
 const Calendar = () => {
   const hook = useCalendar();
 
   return (
-    <div className="p-4">
-      <div className="flex items-center mb-4 gap-3">
-        <ArrowLeftCircleIcon
-          className="font-bold cursor-pointer hover:text-zinc-600"
-          onClick={hook.handlePrevMonth}
-        />
-        <ArrowRightCircleIcon
-          className="cursor-pointer hover:text-zinc-600"
-          onClick={hook.handleNextMonth}
-        />
-        <h2 className="text-xl font-bold">
-          {format(hook.currentMonth, "MMMM yyyy", { locale: ptBR })}
-        </h2>
-      </div>
-
-      <div className="flex flex-col ">
-        <div className="grid grid-cols-7">
-          {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) => (
-            <div key={day} className="text-center font-bold">
-              {day}
-            </div>
-          ))}
+    <div className="p-5 h-screen w-screen overflow-hidden flex flex-col">
+      <MonthSelector {...hook} />
+      <div className=" border-t flex flex-col flex-grow rounded-xl shadow-xl">
+        <div className="bg-emerald-600 rounded-t-xl text-white p-1 grid grid-cols-7">
+          {["DOM.", "SEG.", "TER.", "QUA.", "QUI.", "SEX.", "SÁB."].map(
+            (day) => (
+              <div key={day} className="text-center font-thin">
+                {day}
+              </div>
+            )
+          )}
         </div>
 
-        <div className="grid grid-cols-7 gap-2">
-          {hook.days.map((day) => {
+        <div className=" grid grid-cols-7 flex-grow select-none">
+          {hook.days.map((day, index) => {
             const isCurrentMonth =
               day.getMonth() === hook.currentMonth.getMonth();
 
@@ -51,15 +41,18 @@ const Calendar = () => {
               >
                 <PopoverTrigger asChild>
                   <div
-                    className={`hover:border-zinc-100 lg:p-8 md:p-6 sm:p-4 p-2 rounded-xl cursor-pointer text-center  
-                          ${isSameDay(day, new Date()) ? "font-bold border-zinc-950" : ""}
-                          ${!isCurrentMonth ? "text-gray-400" : "border"}
-                          ${isSameDay(day, hook.selectedDate as Date) ? "bg-zinc-950 text-white" : ""}`}
+                    className={`p-2 border-t cursor-pointer flex items-start justify-start
+                          ${index % 7 === 6 ? "" : "border-r"}  
+                          ${!isCurrentMonth ? "text-gray-400" : ""}`}
                   >
-                    {format(day, "d")}
+                    <div
+                      className={`${isSameDay(day, new Date()) ? "font-bold text-white rounded-full p-1 bg-emerald-600" : ""}`}
+                    >
+                      {format(day, "d")}
+                    </div>
                   </div>
                 </PopoverTrigger>
-                <PopoverContent className={`${hook.dateColor}`}>
+                <PopoverContent>
                   <div
                     onClick={(e) => {
                       e.stopPropagation();
@@ -72,10 +65,7 @@ const Calendar = () => {
                     <X />
                   </div>
 
-                  <CalendarForm
-                    today={day}
-                    handleDateColor={hook.setDateColor}
-                  />
+                  <CalendarForm today={day} />
                 </PopoverContent>
               </Popover>
             );

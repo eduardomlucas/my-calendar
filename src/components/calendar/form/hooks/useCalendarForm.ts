@@ -1,9 +1,12 @@
+import { useState } from "react";
+
 export interface CalendarFormsProps {
   today: Date;
-  handleDateColor: (color: string) => void;
 }
 
 export function useCalendarForm() {
+  const [borderColor, setBorderColor] = useState("");
+
   const colors = [
     {
       id: "blue",
@@ -31,5 +34,5 @@ export function useCalendarForm() {
       bg: "bg-purple-500",
     },
   ];
-  return { colors };
+  return { colors, borderColor, setBorderColor };
 }

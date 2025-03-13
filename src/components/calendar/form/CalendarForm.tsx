@@ -26,10 +26,12 @@ export function CalendarForm(props: CalendarFormsProps) {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="color">Cor</Label>
-          <div className="border rounded-md p-2 flex items-center justify-between gap-2">
+          <div
+            className={`border rounded-md p-2 flex items-center justify-between gap-2 ${hook.borderColor}`}
+          >
             {hook.colors.map((color) => (
               <div
-                onClick={() => props.handleDateColor(color.border)}
+                onClick={() => hook.setBorderColor(color.border)}
                 key={color.id}
                 className={`w-6 h-6 rounded-full cursor-pointer ${color.bg}`}
               ></div>
