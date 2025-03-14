@@ -3,30 +3,27 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { MoonIcon, SunIcon, UserCircle, X } from "lucide-react";
+import { UserCircle, X } from "lucide-react";
 import { format, isSameDay } from "date-fns";
 
 import { useCalendar } from "./hooks/useCalendar";
 import { CalendarForm } from "./form/CalendarForm";
 import { MonthSelector } from "../monthselector/MonthSelector";
+import { ThemeSelector } from "../themeselector/ThemeSelector";
 
 const Calendar = () => {
   const hook = useCalendar();
 
   return (
     <div className="p-5 h-screen w-screen overflow-hidden flex flex-col">
+      <ThemeSelector />
+
       {/* auth */}
       <UserCircle
         size={40}
         className="cursor-pointer border-3 border-emerald-600 rounded-full text-emerald-600 absolute top-5 right-7"
         onClick={() => console.log("login")}
       />
-
-      {/* theme */}
-      <div>
-        <SunIcon className="absolute top-5 left-7" />
-        <MoonIcon className="absolute top-5 left-14" />
-      </div>
 
       <MonthSelector {...hook} />
       <div className="  flex flex-col flex-grow rounded-xl shadow-xl">
