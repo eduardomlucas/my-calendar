@@ -3,7 +3,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { X } from "lucide-react";
+import { MoonIcon, SunIcon, UserCircle, X } from "lucide-react";
 import { format, isSameDay } from "date-fns";
 
 import { useCalendar } from "./hooks/useCalendar";
@@ -15,8 +15,21 @@ const Calendar = () => {
 
   return (
     <div className="p-5 h-screen w-screen overflow-hidden flex flex-col">
+      {/* auth */}
+      <UserCircle
+        size={40}
+        className="cursor-pointer border-3 border-emerald-600 rounded-full text-emerald-600 absolute top-5 right-7"
+        onClick={() => console.log("login")}
+      />
+
+      {/* theme */}
+      <div>
+        <SunIcon className="absolute top-5 left-7" />
+        <MoonIcon className="absolute top-5 left-14" />
+      </div>
+
       <MonthSelector {...hook} />
-      <div className=" border-t flex flex-col flex-grow rounded-xl shadow-xl">
+      <div className="  flex flex-col flex-grow rounded-xl shadow-xl">
         <div className="bg-emerald-600 rounded-t-xl text-white p-1 grid grid-cols-7">
           {["DOM.", "SEG.", "TER.", "QUA.", "QUI.", "SEX.", "SÁB."].map(
             (day) => (
