@@ -3,14 +3,20 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { UserCircle, X } from "lucide-react";
+import { X } from "lucide-react";
 import { format, isSameDay } from "date-fns";
 
 import { useCalendar } from "./hooks/useCalendar";
 import { CalendarForm } from "./form/CalendarForm";
 import { MonthSelector } from "../monthselector/MonthSelector";
 import { ThemeSelector } from "../themeselector/ThemeSelector";
-
+import { CalendarHeader } from "./header/CalendarHeader";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@radix-ui/react-tooltip";
 const Calendar = () => {
   const hook = useCalendar();
 
@@ -18,24 +24,9 @@ const Calendar = () => {
     <div className="p-5 h-screen w-screen overflow-hidden flex flex-col">
       <ThemeSelector />
 
-      {/* auth */}
-      <UserCircle
-        size={40}
-        className="cursor-pointer border-3 border-emerald-600 rounded-full text-emerald-600 absolute top-5 right-7"
-        onClick={() => console.log("login")}
-      />
-
       <MonthSelector {...hook} />
-      <div className="  flex flex-col flex-grow rounded-xl shadow-xl">
-        <div className="bg-emerald-600 rounded-t-xl text-white p-1 grid grid-cols-7">
-          {["DOM.", "SEG.", "TER.", "QUA.", "QUI.", "SEX.", "SÁB."].map(
-            (day) => (
-              <div key={day} className="text-center font-thin">
-                {day}
-              </div>
-            )
-          )}
-        </div>
+      <div className="  flex flex-col flex-grow rounded-xl shadow-xl dark:shadow-md dark:shadow-emerald-600">
+        <CalendarHeader />
 
         <div className=" grid grid-cols-7 flex-grow select-none">
           {hook.days.map((day, index) => {
@@ -51,7 +42,7 @@ const Calendar = () => {
               >
                 <PopoverTrigger asChild>
                   <div
-                    className={`p-2 border-t cursor-pointer flex items-start justify-start
+                    className={`p-2 border-t cursor-pointer flex items-start justify-between
                           ${index % 7 === 6 ? "" : "border-r"}  
                           ${!isCurrentMonth ? "text-gray-400" : ""}`}
                   >
@@ -59,6 +50,29 @@ const Calendar = () => {
                       className={`${isSameDay(day, new Date()) ? "font-bold text-white rounded-full p-1 bg-emerald-600" : ""}`}
                     >
                       {format(day, "d")}
+                    </div>
+                    <div className="flex flex-col gap-1 ">
+                      {hook.tasks
+                        .filter((task) =>
+                          isSameDay(task.date ?? new Date(), day)
+                        )
+                        .map((task, index) => (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div
+                                  key={index}
+                                  className={`w-4 h-3 rounded-full bg-${task.color}-600`}
+                                ></div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <div className="bg-zinc-900 text-white rounded-md p-2 dark:bg-zinc-100 dark:text-zinc-900 font-medium ">
+                                  {task.title}
+                                </div>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        ))}
                     </div>
                   </div>
                 </PopoverTrigger>

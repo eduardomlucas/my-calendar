@@ -6,6 +6,7 @@ import {
   endOfWeek,
   addDays,
 } from "date-fns";
+import { CalendarDto } from "@/services/calendar/calendar.type";
 
 export function useCalendar() {
   const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
@@ -27,6 +28,13 @@ export function useCalendar() {
     setIsOpen(true);
   };
 
+  const tasks: CalendarDto[] = useMemo(() => {
+    return JSON.parse(localStorage.getItem("tasks") || "[]").sort(
+      (a: CalendarDto, b: CalendarDto) =>
+        new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+  }, []);
+
   return {
     currentMonth,
     setCurrentMonth,
@@ -37,5 +45,6 @@ export function useCalendar() {
     selectedDate,
     isOpen,
     setIsOpen,
+    tasks,
   };
 }

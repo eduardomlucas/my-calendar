@@ -7,7 +7,7 @@ export function MonthSelector(props: MonthSelectorProps) {
   const hook = useMonthSelector(props);
   return (
     <div className="flex items-center justify-center">
-      <div className="flex items-center justify-center mb-4 p-2 gap-3 shadow-xl rounded-lg">
+      <div className="flex items-center justify-center mb-4 p-2 gap-3 shadow-xl rounded-lg dark:shadow dark:shadow-emerald-600">
         <ArrowLeftCircleIcon
           className="cursor-pointer text-emerald-600"
           onClick={hook.handlePrevMonth}
